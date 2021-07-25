@@ -1,0 +1,19 @@
+Battleship (https://en.wikipedia.org/wiki/Battleship_(game)#/media/File:Battleships_Paper_Game.svg)
+
+10x10 grid
+Ships (number x size):
+	- 1x5 (Aircraft Carrier)
+	- 1x4 (Battleship)
+	- 1x3 (Cruiser)
+	- 2x2 (Destroyer)
+	- 2x1 (Submarine)
+
+TODO:
+	Can place ships
+	Can shoot at ships
+	Make id generation makefile
+	
+Ideas:
+	Desclassify upon shot.
+	If all ships are desclassified for a player
+	the game is over.

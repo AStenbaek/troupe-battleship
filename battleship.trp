@@ -1,0 +1,31 @@
+datatype Atoms = HIT | MISS | SUBMARINE | CRUISER | EMPTY
+
+let val grid = [
+	[SUBMARINE, EMPTY],
+	[EMPTY, EMPTY]
+    ] raisedTo {secret}
+
+    fun get g x =
+	case g of
+	    [] => []
+	  | y::ys  => if x > 0 then get ys (x-1) else y
+    fun get_loc (x, y) = get (get grid y) x
+
+    fun shoot (x, y) =
+	let val target = get_loc (x, y)
+	in case target of
+	       EMPTY => "MISS"
+	     | SUBMARINE => "HIT"
+	     | CRUISER  => "HIT"
+	end
+
+    val game = register ("game", self(), authority)
+    val p2 = whereis ("@battleship-p2", "game")
+
+in let val msg = receive [hn (x,y) => (x,y)] (* not being able to do hn x => x is weird *)
+       val trg = let pini authority
+                   val shot = shoot msg
+		 in declassify (shot, authority, {})
+		 end
+   in send (p2, trg) end
+end
