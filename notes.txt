@@ -14,6 +14,9 @@ TODO:
 	Make id generation makefile
 	
 Ideas:
-	Desclassify upon shot.
+	Declassify upon shot.
 	If all ships are desclassified for a player
 	the game is over.
+
+User-Guide:
+	exit - "See also library functions inputLineWithPini and inputLineWithPini from stdio library."

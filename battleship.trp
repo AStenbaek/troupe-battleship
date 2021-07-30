@@ -1,9 +1,22 @@
-datatype Atoms = HIT | MISS | SUBMARINE | CRUISER | EMPTY
+import lists
 
-let val grid = [
-	[SUBMARINE, EMPTY],
-	[EMPTY, EMPTY]
-    ] raisedTo {secret}
+let val esc = "\u001b[0m"
+    val sea = "\u001b[38;5;20m" ^ "~" ^ esc
+    val sub = "\u001b[38;5;125m" ^ "S" ^ esc
+    val cru = "\u001b[38;5;200m" ^ "C" ^ esc
+    val grid = [
+	["SUBMARINE", "EMPTY"],
+	["EMPTY", "EMPTY"]
+    ] raisedTo `{secret}`
+
+    fun print_grid g = 
+	let fun convert_lines l = foldl (fn (x, y) => y ^ case x of
+						    "EMPTY" => sea
+						  | "SUBMARINE" => sub
+						  | "CRUISER"  => cru
+					) "" l
+	in map (fn x => print x) (map (fn x => convert_lines x) g)
+	end
 
     fun get g x =
 	case g of
@@ -14,18 +27,18 @@ let val grid = [
     fun shoot (x, y) =
 	let val target = get_loc (x, y)
 	in case target of
-	       EMPTY => "MISS"
-	     | SUBMARINE => "HIT"
-	     | CRUISER  => "HIT"
+	       "EMPTY" => "MISS"
+	     | "SUBMARINE" => "HIT"
+	     | "CRUISER"  => "HIT"
 	end
 
     val game = register ("game", self(), authority)
     val p2 = whereis ("@battleship-p2", "game")
 
-in let val msg = receive [hn (x,y) => (x,y)] (* not being able to do hn x => x is weird *)
+in let val msg = receive [hn (x,y) => (x,y)]
        val trg = let pini authority
                    val shot = shoot msg
-		 in declassify (shot, authority, {})
+		 in declassify (shot, authority, `{}`)
 		 end
-   in send (p2, trg) end
+   in print_grid grid; send (p2, trg) end
 end
