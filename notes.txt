@@ -12,6 +12,7 @@ TODO:
 	Can place ships
 	Can shoot at ships
 	Make id generation makefile
+	Change representation to a status list which references other pieces of the ship
 	
 Ideas:
 	Declassify upon shot.
